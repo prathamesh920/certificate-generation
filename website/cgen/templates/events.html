@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block header%}
+    <h1>Events</h1>
+{% endblock %}
+{% block content %}
+    {% for event in events %}
+        <div class="jumbotron">
+            <h1 class="display-4">{{ event.name }}</h1>
+            <p class="lead"> {{ event.description }} </p>
+          {% for certificate in event.certificate_set.all %}
+          <hr class="my-4">
+          <p>{{ certificate.description }}
+          <br>
+          To download certificate, click on the button below</p>
+          <p class="lead">
+          <a class="btn btn-primary btn-lg" href="{%  url 'certificate_download' certificate.id %}" role="button">Go to Download Certificate </a>
+      </p>
+         {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}
+

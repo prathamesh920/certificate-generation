@@ -1,0 +1,45 @@
+
+{% extends 'base.html' %}
+{% block header%}
+<h1> Upload Particiapants for {{ certificate.event }} </h1>
+{% endblock %}
+{% block content %}
+<div class="container">
+        {% if messages %}
+            <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+        {% endif %}
+        {% if message %}
+        <div class="alert alert-primary" role="alert">
+                <strong>{{ message }}</strong>
+        </div>
+        {% endif %}
+<div id="upload_users_csv" >
+        <form id="upload_users" action="{% url 'upload' certificate.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="custom-file" align="center">
+                <label class="custom-file-label" for="upload">Choose file</label>
+                <input type="file" class="custom-file-input" name="csv_file" id="upload"/>
+            </div>
+            <br>
+            <div class="input-group-append">
+                <button class="btn btn-outline-primary" type="submit">
+                    <i class="fa fa-upload"></i>
+                    Upload
+                </button>
+            </div>
+        </form>
+        <hr>
+        <p>
+        The headers should exactly match the certificate variables<br>
+        - Mandatory fields are <b> name, email. </b><br />
+        - Other fields are optional. <br />
+        </p>
+</div>
+
+</div>
+</div>
+{% endblock %}
