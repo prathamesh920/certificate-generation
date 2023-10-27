@@ -11,10 +11,11 @@ def verify(key):
         participant = cm.participant
         info = eval(participant.details)
         details['Event'] = participant.certificate.event.name
+        description = participant.certificate.event.description
         details.update(info)
     except CertificateManager.DoesNotExist:
         details['Authentic'] = False
-        return details
-    return details
+        return details, description
+    return details, description
 
 

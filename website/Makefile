@@ -40,5 +40,5 @@ workshop_cert:	$(name).tex
 
 clean:
 	@echo "removing all tmp+pdf files"
-	-rm -rvf *~ $(name).pdf *-pics.pdf $(name).tex $(name).aux $(name).log *.vrb *.out *.toc *.nav *.snm
+	-rm -rvf *~ $(name).pdf qrcode.png *-pics.pdf $(name).svg $(name).tex $(name).aux $(name).log *.vrb *.out *.toc *.nav *.snm
 	-rm -rvf *.std* *.sh

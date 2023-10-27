@@ -42,10 +42,15 @@
         </table>
       <div style="width:40%"><a href="{% url 'verify' %}" >&lt Back</a></div>
     </div>
+
+    <div align="left" style="width:50%" >
+        {{ description | safe }}
+    </div>
     {% endif %}
     <hr>
-    <center><h4>Problem in verifying the details ? write to us at <a href="mailto:certificates@fossee.in">certificates[at]fossee[dot]in</a></h4>
+    <!--<center><h4>Problem in verifying the details ? write to us at <a href="mailto:certificates@fossee.in">certificates[at]fossee[dot]in</a></h4>-->
 {% endblock %}
+
 
 {% block javascript %}
 <script>

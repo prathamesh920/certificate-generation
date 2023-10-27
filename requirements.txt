@@ -1,0 +1,8 @@
+asgiref==3.6.0
+backports.zoneinfo==0.2.1
+Django==4.1.7
+Pillow==10.1.0
+pypng==0.20220715.0
+segno==1.5.3
+sqlparse==0.4.3
+typing-extensions==4.8.0

@@ -37,18 +37,15 @@ def certificate_download(request, certificate_id):
 def verify(request, key=None):
     context = {}
     if key is not None:
-        details = verification.verify(key)
-        context['details'] = details
-        context['has_details'] = True
-        return render(request, 'verification.html', context)
+        skey = key
     elif request.method == 'POST':
-        key = request.POST.get('key').strip()
-        details = verification.verify(key)
-        context['has_details'] = True
-        context['details'] = details
-        return render(request, 'verification.html', context)
-    context['has_details'] = False
-    return render(request, 'verification.html', {})
+        skey = request.POST.get('key').strip()
+    details, description = verification.verify(skey)
+    context['details'] = details
+    context['has_details'] = True
+    context['has_details'] = details['Authentic']
+    context['description'] = description
+    return render(request, 'verification.html', context)
 
 def upload_csv_participants(request, certificate_id):
     certificate = get_object_or_404(Certificate, pk=certificate_id)

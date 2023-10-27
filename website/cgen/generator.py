@@ -2,13 +2,16 @@ import os
 import subprocess
 from string import Template
 import shutil
+import segno
 
 from pathlib import Path
 from django.core.files import File
 from django.conf import settings
+from django.contrib.sites.models import Site
 
 from cgen.models import CertificateManager, Participant, Certificate
 
+DOMAIN = Site.objects.get_current().domain
 
 def get_certificate(certificate_id, email):
     try:
@@ -31,7 +34,7 @@ def get_details(certificate_id, email):
     info = eval(f'{participant.details}')
     key = cm.get_serial_key_short()
     info['serial_key'] = key
-    info['qr_code'] = f'https://fossee.in/certificates/verify/{key}/'
+    info['qr_code'] = f'{DOMAIN}/certificates/verify/{key}/'
     certificate_details['info'] = info
     path = f'{settings.PATH}/{certificate.id}'
     certificate_details['path'] = path
@@ -45,7 +48,7 @@ def generate(certificate, email):
     cm, certificate_details = get_details(certificate, email)
     template = certificate_details['template']
     info = certificate_details['info']
-    path = certificate_details['path']
+    cpath = certificate_details['path']
     file_name = certificate_details['file_name']
     template_type = certificate_details['template_type']
     msg = None
@@ -56,13 +59,13 @@ def generate(certificate, email):
         template_file.close()
         if template_type == 'tex':
             content_tex = content.safe_substitute(info)
-            create_tex = open('{0}/{1}.tex'.format(path, file_name), 'w')
+            create_tex = open('{0}/{1}.tex'.format(cpath, file_name), 'w')
             create_tex.write(content_tex)
             create_tex.close()
-            return_value, msg = _make_certificate_certificate(path, file_name,
+            return_value, msg = _make_certificate_certificate(cpath, file_name,
                                     command='participant_cert')
             if return_value == 0:
-                path = Path('{0}/{1}.pdf'.format(path, file_name))
+                path = Path('{0}/{1}.pdf'.format(cpath, file_name))
                 with path.open(mode='rb') as f:
                     cm.certificate_file = File(f, name=path.name)
                     cm.save()
@@ -70,18 +73,26 @@ def generate(certificate, email):
                 has_error = True
         if template_type == 'svg':
             content_svg = content.safe_substitute(info)
-            create_svg = open('{0}/{1}.svg'.format(path, file_name), 'w')
+            create_svg = open('{0}/{1}.svg'.format(cpath, file_name), 'w')
             create_svg.write(content_svg)
             create_svg.close()
-            return_value, msg = _make_certificate_certificate(path, file_name,
+
+            # create QR code
+            qrcode_text = info['qr_code']
+            img = segno.make(qrcode_text)
+            qrpath = os.path.join(cpath, 'qrcode.png')
+            img.save(qrpath, scale=10, light=None)
+
+            return_value, msg = _make_certificate_certificate(cpath, file_name,
                                     command='participant_cert_svg')
             if return_value == 0:
-                path = Path('{0}/{1}.pdf'.format(path, file_name))
+                path = Path('{0}/{1}.pdf'.format(cpath, file_name))
                 with path.open(mode='rb') as f:
                     cm.certificate_file = File(f, name=path.name)
                     cm.save()
             else:
                 has_error = True
+            _clean_certificate_certificate(cpath, file_name)
     except Exception as e:
         has_error = True
         msg = e
