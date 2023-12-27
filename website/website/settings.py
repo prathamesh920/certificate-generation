@@ -127,5 +127,5 @@ STATIC_URL = '/static/'
 
 LOGO = "https://www.cep.iitb.ac.in/assets/img/IIT-Logo.png"
 
-CERTIFICATES_PATH = f"settings.BASE_DIR/certificates"
+CERTIFICATES_PATH = f"{BASE_DIR}/certificates"
 
