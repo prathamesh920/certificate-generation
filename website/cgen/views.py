@@ -15,23 +15,38 @@ def events(request):
     context = {'events': events}
     return render(request, 'index.html', context)
 
+def certificate_download_all(request, certificate_id):
+    certificate = get_object_or_404(Certificate, id=certificate_id)
+    context = {'certificate': certificate}
+    participants = certificate.participant_set.all()
+    details = {}
+    for participant in participants:
+        info = eval(f'{participant.details}')
+        details[participant.email] = info['name']
+    context['details'] = details
+    return render(request, 'download_all.html', context)
+
+
 # Create your views here.
-def certificate_download(request, certificate_id):
+def certificate_download(request, certificate_id, email=None):
     context= {}
     certificate = get_object_or_404(Certificate, id=certificate_id)
     context['certificate'] = certificate
     ci = RequestContext(request)
     if request.method == 'POST':
         email = request.POST.get('email').strip()
-        cm, s = generator.get_certificate(certificate_id, email)
-        if not s:
-            context["notregistered"] = 1
-            return render(request, 'download.html', context)
-        if s:
-            response = HttpResponse(cm.certificate_file, content_type="application/pdf")
-            response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
-            return response 
-    return render(request, 'download.html', context)
+    elif email is not None:
+        email = email
+    else:
+        return render(request, 'download.html', context)
+    cm, s = generator.get_certificate(certificate_id, email)
+    if not s:
+        context["notregistered"] = 1
+        return render(request, 'download.html', context)
+    if s:
+        response = HttpResponse(cm.certificate_file, content_type="application/pdf")
+        response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
+        return response
 
 
 def verify(request, key=None):

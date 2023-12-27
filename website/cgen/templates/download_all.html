@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block header%}
+    {{ certificate.event.name }} Certificates
+{% endblock %}
+{% block content %}
+        <table class="table table-bordered">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Download</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        {% for email, name in details.items %}
+            <tr>
+             <th scope="row">{{ forloop.counter }}</th>
+             <td> {{ name | title }} </td>
+              <td><a class="btn btn-primary btn-lg" href="{%  url 'certificate_download' certificate.id email  %}" role="button"> Download </a></td>
+            </tr>
+        {% endfor %}
+          </tbody>
+
+
+        </table>
+
+
+{% endblock %}
+
