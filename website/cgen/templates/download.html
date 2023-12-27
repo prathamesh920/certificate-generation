@@ -1,30 +1,39 @@
 {% extends 'base.html' %}
 {% block header%}
-    <h1>{{ certificate.event.name }} Certificates</h1>
+    {{ certificate.event.name }} Certificates
 {% endblock %}
 {% block content %}
-          <div class="modal fade" id="invalidModal" tabindex="-1" role="dialog" aria-labelledby="invalidModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="invalidModalLabel">Invalid Email</h4>
-                  </div>
-                  <div class="modal-body">
-                    The requested certificate is unavailable for your email address. Please enter proper email and retry.
-                  </div>
-                </div>
-              </div>
-          </div>
-          <form class="col-lg-12" action="{% url 'certificate_download' certificate.id %}" method="post">
+
+        <form style="margin-right:200px; margin-left:200px" action="{% url 'certificate_download' certificate.id %}" method="post">
             {% csrf_token %}
-            {{ message }}
-            <div class="input-group" style="width:340px;text-align:center;margin:0 auto;">
-            <input style="width:450;" class="form-control input-lg" placeholder="Enter the email address you used for registration" type="text" id="email" name=email>
-              <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="submit">Download Certificate</button></span>
+          <div class="mb-3">
+            <label for="inputemail" class="form-label">Email address</label>
+            <input type="email" name="email" id="email" class="form-control" id="inputemail" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text"> Enter the registered email address.</div>
+          </div>
+          <button type="submit" class="btn btn-primary">Download</button>
+        </form>
+
+
+        <div class="modal" id="invalidModal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Invalid Email</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick="$('#invalidModal').hide()"></button>
+              </div>
+              <div class="modal-body">
+                <p>
+                    The requested certificate is unavailable for your email address. Please enter proper email and retry.
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onClick="$('#invalidModal').hide()">Close</button>
+              </div>
             </div>
-          </form>
-          <center><h4>Problem in downloading the certificate? Write to us at <a href="mailto:certificates@fossee.in">certificates[at]fossee[dot]in</a></h4>
+          </div>
+        </div>
+          <!--<center><h4>Problem in downloading the certificate? Write to us at <a href="mailto:certificates@fossee.in">certificates[at]fossee[dot]in</a></h4>-->
 {% endblock %}
 
 {% block javascript %}
@@ -34,7 +43,7 @@
         email = ""
         error = "{{ error }}"
         if(error == "True"){
-            $("#invalidModal").modal();
+            $("#invalidModal").show();
         }
         if(value == "paper"){
             $('#A').prop('checked', true)
@@ -43,7 +52,7 @@
         $('#email').val(email);
         notreg = "{{ notregistered }}";
         if(notreg == "1"){
-            $("#invalidModal").modal();
+            $("#invalidModal").show();
         }
         $("[name=type]").change(function(){
             $("#paper").remove();

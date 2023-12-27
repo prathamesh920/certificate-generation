@@ -13,7 +13,7 @@ import csv
 def events(request):
     events = Event.objects.filter(is_published=True)
     context = {'events': events}
-    return render(request, 'events.html', context)
+    return render(request, 'index.html', context)
 
 # Create your views here.
 def certificate_download(request, certificate_id):
@@ -36,13 +36,19 @@ def certificate_download(request, certificate_id):
 
 def verify(request, key=None):
     context = {}
+    if key is None and request.method == 'GET':
+        return render(request, 'verification.html', context)
     if key is not None:
         skey = key
     elif request.method == 'POST':
         skey = request.POST.get('key').strip()
+
     details, description = verification.verify(skey)
+    if not details['Authentic']:
+        context['invalidserial'] = 1
+        return render(request, 'verification.html', context)
+
     context['details'] = details
-    context['has_details'] = True
     context['has_details'] = details['Authentic']
     context['description'] = description
     return render(request, 'verification.html', context)

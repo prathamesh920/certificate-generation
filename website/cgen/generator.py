@@ -36,7 +36,7 @@ def get_details(certificate_id, email):
     info['serial_key'] = key
     info['qr_code'] = f'{DOMAIN}/certificates/verify/{key}/'
     certificate_details['info'] = info
-    path = f'{settings.BASE_DIR}/{certificate.id}'
+    path = f'{settings.BASE_DIR}/certificates/{certificate.id}'
     certificate_details['path'] = path
     if not  os.path.exists(f"path/{{Makefile}}"):
         shutil.copy2(f'{settings.BASE_DIR}/Makefile', path)

@@ -4,7 +4,8 @@ from cgen.models import CertificateManager
 
 
 def verify(key):
-    details = OrderedDict() 
+    details = OrderedDict()
+    description = None
     try:
         cm = CertificateManager.objects.get(serial_key_short=key)
         details['Authentic'] = True

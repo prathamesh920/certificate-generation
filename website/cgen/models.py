@@ -1,6 +1,7 @@
 from django.db import models, IntegrityError
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.conf import settings
 
 import os
 import hashlib
@@ -11,13 +12,13 @@ types = (
         )
 
 # Create your models here.
-
-
 def get_file_dir(instance, filename):
-    return os.sep.join((str(instance.id), filename))
+    if not  os.path.exists(settings.CERTIFICATES_PATH):
+        os.mkdir(settings.CERTIFICATES_PATH)
+    return os.sep.join(('certificates', str(instance.id), filename))
 
 def get_certificate_dir(instance, filename):
-    return os.sep.join((str(instance.participant.certificate.id), str(instance.id), filename))
+    return os.sep.join(('certificates', str(instance.participant.certificate.id), str(instance.id), filename))
 
 class Event(models.Model):
     """

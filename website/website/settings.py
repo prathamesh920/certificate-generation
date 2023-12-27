@@ -124,3 +124,8 @@ TIME_OUT = 15
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGO = "https://www.cep.iitb.ac.in/assets/img/IIT-Logo.png"
+
+CERTIFICATES_PATH = f"settings.BASE_DIR/certificates"
+
