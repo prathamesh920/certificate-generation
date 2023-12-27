@@ -45,7 +45,7 @@ def certificate_download(request, certificate_id, email=None):
         return render(request, 'download.html', context)
     if s:
         response = HttpResponse(cm.certificate_file, content_type="application/pdf")
-        response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="{cm.certificate_file.name}"'
         return response
 
 

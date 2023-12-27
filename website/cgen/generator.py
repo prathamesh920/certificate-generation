@@ -40,7 +40,7 @@ def get_details(certificate_id, email):
     certificate_details['path'] = path
     if not  os.path.exists(f"path/{{Makefile}}"):
         shutil.copy2(f'{settings.BASE_DIR}/Makefile', path)
-    certificate_details['file_name'] = f'{email}-{certificate.id}'
+    certificate_details['file_name'] = f"{email.replace('.', '')}-{certificate.id}"
     return cm, certificate_details
 
 
