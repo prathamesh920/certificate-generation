@@ -45,7 +45,7 @@ class Event(models.Model):
     is_published = models.BooleanField(default=False)
 
     # One who creates the event (organiser)
-    creator = models.ForeignKey(User, null=True, on_delete=models.PROTECT)
+    creator = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
 
     def __str__(self):
@@ -58,7 +58,7 @@ class Certificate(models.Model):
     """
 
     # Event to which the certificate belongs
-    event = models.ForeignKey(Event, on_delete=models.PROTECT)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
     # Type of certificate
     description = models.TextField()
@@ -87,7 +87,7 @@ class Participant(models.Model):
 
     email = models.EmailField(max_length=1000)
 
-    certificate = models.ForeignKey('Certificate', on_delete=models.PROTECT)
+    certificate = models.ForeignKey('Certificate', on_delete=models.CASCADE)
 
     details = models.TextField()
 
@@ -107,7 +107,7 @@ class CertificateManager(models.Model):
             null=True, blank=True, default=None,
         )
 
-    participant = models.ForeignKey(Participant, on_delete=models.PROTECT)
+    participant = models.ForeignKey(Participant, on_delete=models.CASCADE)
 
     is_created = models.BooleanField(default=False)
 
