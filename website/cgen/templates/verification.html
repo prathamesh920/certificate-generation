@@ -31,26 +31,6 @@
               <span class="input-group-btn"><button class="btn btn-lg btn-primary" type="submit">Verify</button></span>
         </div>
     </form>
-    {% if has_details %}
-    <br>
-    <div>
-        <caption> Following are the details</caption> 
-        <table class="table table-primary table-bordered" >
-            <tbody>
-                {% for key, value in details.items %}
-                <tr>
-                    <td>{{ key | title  }}</td>
-                    <td>{{ value }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="bg-white">
-        {{ description | safe }}
-        </div>
-    </div>
-
-    {% endif %}
     </div>
 {% endblock %}
 

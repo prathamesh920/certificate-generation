@@ -66,7 +66,7 @@ def verify(request, key=None):
     context['details'] = details
     context['has_details'] = details['Authentic']
     context['description'] = description
-    return render(request, 'verification.html', context)
+    return render(request, 'verification_details.html', context)
 
 def upload_csv_participants(request, certificate_id):
     certificate = get_object_or_404(Certificate, pk=certificate_id)
