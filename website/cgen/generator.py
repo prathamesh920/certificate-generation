@@ -11,7 +11,8 @@ from django.contrib.sites.models import Site
 
 from cgen.models import CertificateManager, Participant, Certificate
 
-DOMAIN = Site.objects.get_current().domain
+def _get_domain():
+    return Site.objects.get_current().domain
 
 def get_certificate(certificate_id, email):
     try:
@@ -34,7 +35,8 @@ def get_details(certificate_id, email):
     info = eval(f'{participant.details}')
     key = cm.get_serial_key_short()
     info['serial_key'] = key
-    info['qr_code'] = f'{DOMAIN}/certificates/verify/{key}/'
+    domain = _get_domain()
+    info['qr_code'] = f'{domain}/certificates/verify/{key}/'
     certificate_details['info'] = info
     path = f'{settings.BASE_DIR}/certificates/{certificate.id}'
     certificate_details['path'] = path
