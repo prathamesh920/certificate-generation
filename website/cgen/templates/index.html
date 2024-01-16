@@ -74,23 +74,30 @@
                     <p class="card-text">{{ event.name }} <br>
                     <table class="table">
                     <tr>
-                        <td> Start Date: </td>
-                        <td> {{event.start_date | date:"F d, Y" }} </td>
-                    </tr>
-                        <td> End Date: </td>
-                        <td> {{event.end_date | date:"F d, Y" }} </td>
-                    </table>
-                    </p>
+                  <td>
                   {% for certificate in event.certificate_set.all %}
                   <div class="d-flex justify-content-between align-items-center">
-                  <p>{{ certificate.description }}
+                      <p>{{ certificate.description }}</p>
                     <div class="btn-group">
-                      <a type="button" href="{%  url 'certificate_download' certificate.id %}" class="btn btn-sm btn-outline-secondary">Download</a>
-                      <a type="button" href="{%  url 'verify' %}" class="btn btn-sm btn-outline-secondary">Verify</a>
+                      <a type="button" href="{%  url 'certificate_download' certificate.id %}" class="btn btn-sm btn-outline-primary">Download</a>
+                      <a type="button" href="{%  url 'verify' %}" class="btn btn-sm btn-outline-success">Verify</a>
                     </div>
                   </div>
                   <!--<small class="text-muted">9 Downloads</small>-->
+                  </td>
                   {% endfor %}
+                    </tr>
+                    <tr>
+                        <td>
+                  <div class="d-flex justify-content-between align-items-center">
+                      <p> Date: </p>
+                    <div>
+                        {{event.start_date | date:"F d" }} - {{ event.end_date | date:"d, Y"}}
+                    </div>
+                  </div>
+                         </td>
+                    </tr>
+                    </table>
                 </div>
               </div>
             </div>

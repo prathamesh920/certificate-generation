@@ -11,6 +11,12 @@ def verify(key):
         details['Authentic'] = True
         participant = cm.participant
         info = eval(participant.details)
+        a = 'course'
+        b = 'course1'
+        c = 'course2'
+        remove_course(a, info)
+        remove_course(b, info)
+        remove_course(c, info)
         details['Event'] = participant.certificate.event.name
         description = participant.certificate.event.description
         details.update(info)
@@ -19,4 +25,6 @@ def verify(key):
         return details, description
     return details, description
 
-
+def remove_course(i, d):
+    if i in d:
+        d.pop(i)
