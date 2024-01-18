@@ -56,11 +56,10 @@
   {% endblock %}
 
 {% block header %}
-    Certificates available for download.
+    Certificates Available for Download
 {% endblock %}
 
 {% block header_content %}
-    <u> Certificates for the following events and courses are available.</u>
 {% endblock %}
 
 {% block content %}
@@ -71,8 +70,15 @@
                   <!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ event.name }}</text></svg>
                 -->
                 <div class="card-body">
-                    <p class="card-text">{{ event.name }} <br>
+                    <p class="card-text" style="text-align:center">{{ event.name }} <br>
                     <table class="table">
+                    <tr>
+                        <td>
+                  <div class="d-flex justify-content-between align-items-center">
+                      <p> Date:-   {{event.start_date | date:"F d" }} - {{ event.end_date | date:"F d, Y"}}</p>
+                  </div>
+                         </td>
+                    </tr>
                     <tr>
                   <td>
                   {% for certificate in event.certificate_set.all %}
@@ -81,21 +87,11 @@
                     <div class="btn-group">
                       <a type="button" href="{%  url 'certificate_download' certificate.id %}" class="btn btn-sm btn-outline-primary">Download</a>
                       <a type="button" href="{%  url 'verify' %}" class="btn btn-sm btn-outline-success">Verify</a>
-                    </div>
+		    </div>
                   </div>
                   <!--<small class="text-muted">9 Downloads</small>-->
                   </td>
                   {% endfor %}
-                    </tr>
-                    <tr>
-                        <td>
-                  <div class="d-flex justify-content-between align-items-center">
-                      <p> Date: </p>
-                    <div>
-                        {{event.start_date | date:"F d" }} - {{ event.end_date | date:"d, Y"}}
-                    </div>
-                  </div>
-                         </td>
                     </tr>
                     </table>
                 </div>

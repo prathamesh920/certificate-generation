@@ -8,7 +8,7 @@
     {% if has_details %}
     <br>
     <div>
-        <caption> Following are the details</caption>
+        <caption> Following are the details<br></caption>
         <table class="table table-primary table-bordered" >
             <tbody>
                 {% for key, value in details.items %}
@@ -21,6 +21,7 @@
         </table>
         <div class="bg-white">
         {{ description | safe }}
+	<br>
         </div>
     </div>
 
